@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI YouTube Script Architect (Gemini 3 + GPT-5)</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <style>
+        :root { --yt-red: #ff0000; --bg: #0a0a0a; --card: #161616; --text: #e0e0e0; --accent: #00f2ff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); padding: 20px; margin: 0; }
+        .container { max-width: 900px; margin: auto; background: var(--card); border-radius: 24px; padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid #333; }
+        
+        #loader {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 999; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .circle { width: 70px; height: 70px; border: 6px solid #222; border-top: 6px solid var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        h1 { text-align: center; color: #fff; font-size: 28px; margin-bottom: 5px; }
+        .engine-status { text-align: center; font-size: 11px; color: var(--accent); margin-bottom: 30px; letter-spacing: 1px; font-weight: bold; }
+        
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px; color: #aaa; text-transform: uppercase; }
+        input, textarea, select { width: 100%; padding: 16px; background: #000; border: 1px solid #444; border-radius: 12px; color: #fff; font-size: 15px; box-sizing: border-box; }
+        input:focus, textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 10px rgba(0,242,255,0.2); }
+
+        .btn-container { display: flex; gap: 15px; margin-top: 30px; }
+        .gen-btn { flex: 2; background: var(--yt-red); color: white; border: none; padding: 20px; border-radius: 12px; font-size: 18px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .gen-btn:hover { background: #cc0000; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255,0,0,0.3); }
+
+        .result-area { margin-top: 40px; border-top: 1px solid #333; padding-top: 30px; }
+        .script-output { background: #000; padding: 25px; border-radius: 16px; border: 1px solid #444; line-height: 1.8; white-space: pre-wrap; font-size: 16px; min-height: 300px; color: #fff; }
+        .copy-btn { background: #333; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; float: right; margin-bottom: 10px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<div id="loader">
+    <div class="circle"></div>
+    <p id="loader-status" style="margin-top: 25px; color: var(--accent);">Gemini 3 Pro is Deconstructing Viral Patterns...</p>
+</div>
+
+<div class="container">
+    <h1>YouTube Viral Script Architect</h1>
+    <div class="engine-status">HYBRID ENGINE: GEMINI 3 PRO + GPT-5 (2025)</div>
+
+    <div class="form-group">
+        <label>Competitor Video URL (To Analyze Logic & Hook)</label>
+        <input type="text" id="compUrl" placeholder="Paste link of a viral video in your niche...">
+    </div>
+
+    <div class="form-group">
+        <label>Your Topic or Core Content</label>
+        <textarea id="myTopic" rows="3" placeholder="Tell the AI what your video is about..."></textarea>
+    </div>
+
+    <div class="form-group" style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+            <label>Script Language</label>
+            <select id="lang">
+                <option value="Hinglish (Hindi + English Mix)">Hinglish (Natural Daily Mix)</option>
+                <option value="Hindi (Formal/Standard)">Hindi</option>
+                <option value="English">English</option>
+            </select>
+        </div>
+        <div style="flex: 1;">
+            <label>Tone</label>
+            <select id="tone">
+                <option value="High Energy & Dramatic">High Energy</option>
+                <option value="Educational & Calm">Educational</option>
+                <option value="Storytelling & Mystery">Storytelling</option>
+                <option value="Aggressive & Direct">Aggressive</option>
+            </select>
+        </div>
+    </div>
+
+    <button class="gen-btn" onclick="generateViralScript()">GENERATE MASTER SCRIPT</button>
+
+    <div class="result-area">
+        <button class="copy-btn" onclick="copyScript()">COPY FULL SCRIPT</button>
+        <label>Architected Viral Script</label>
+        <div id="scriptOutput" class="script-output">The master script will appear here...</div>
+    </div>
+</div>
+
+<script>
+    async function generateViralScript() {
+        const url = document.getElementById('compUrl').value;
+        const topic = document.getElementById('myTopic').value;
+        const lang = document.getElementById('lang').value;
+        const tone = document.getElementById('tone').value;
+        const loader = document.getElementById('loader');
+        const status = document.getElementById('loader-status');
+
+        if (!topic) return alert("Please enter your video topic!");
+
+        loader.style.display = 'flex';
+
+        try {
+            // STEP 1: Gemini 3 Pro Analysis
+            status.innerText = "Step 1: Gemini 3 Pro is analyzing competitor hooks & retention peaks...";
+            const analysisPrompt = `Analyze the high-retention structure of this video idea: "${topic}" 
+            taking inspiration from this URL: ${url}. 
+            Identify: 
+            1. The "Killer Hook" (first 10 seconds).
+            2. The "Bridge" (keeping them after intro).
+            3. 3 Key "Value Bombs".
+            4. The "Retention Loop" ending.
+            Return only the structured analysis data.`;
+
+            const analysisData = await puter.ai.chat(analysisPrompt, { model: 'gemini-3-pro-preview' });
+
+            // STEP 2: GPT-5 Script Writing
+            status.innerText = "Step 2: GPT-5 is writing your script in " + lang + "...";
+            const scriptPrompt = `You are the world's best YouTube script writer. 
+            Using this viral analysis: [${analysisData.toString()}], 
+            write a full video script for the topic: "${topic}".
+            
+            LANGUAGE: ${lang} (Keep it extremely natural, like daily conversation).
+            TONE: ${tone}.
+            
+            STRUCTURE:
+            [START HOOK] (Visual description + Spoken lines)
+            [INTRO] (Quick, no fluff)
+            [MAIN BODY] (Break into points with pattern interrupts)
+            [OUTRO] (Call to action & "Next Video" teaser)
+            
+            Format with clear [Screen Directions] and [Spoken Lines].`;
+
+            const finalScript = await puter.ai.chat(scriptPrompt, { model: 'gpt-5' });
+
+            document.getElementById('scriptOutput').innerText = finalScript.toString();
+
+        } catch (e) {
+            console.error(e);
+            alert("Model access error. Please check your Puter connection.");
+        } finally {
+            loader.style.display = 'none';
+        }
+    }
+
+    function copyScript() {
+        const text = document.getElementById('scriptOutput').innerText;
+        navigator.clipboard.writeText(text);
+        alert("Script copied to clipboard!");
+    }
+</script>
+
+</body>
+</html>
