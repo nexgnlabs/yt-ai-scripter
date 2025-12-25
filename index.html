@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10-Minute Viral Script Engine (Gemini 1.5 + GPT-4o)</title>
+    <title>Viral Script Engine (Budget Friendly)</title>
     <script src="https://js.puter.com/v2/"></script>
     <style>
         :root { --yt-red: #ff0000; --bg: #0d0d0d; --card: #1a1a1a; --text: #f0f0f0; --accent: #00e676; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 15px; }
-        .container { max-width: 950px; margin: auto; background: var(--card); border-radius: 20px; padding: 35px; border: 1px solid #333; }
+        .container { max-width: 850px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; }
         
         #loader {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -17,127 +17,85 @@
         .spinner { width: 50px; height: 50px; border: 5px solid #222; border-top: 5px solid var(--yt-red); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        h1 { text-align: center; font-size: 24px; color: #fff; margin-bottom: 30px; }
-        .engine-label { color: var(--accent); font-size: 10px; font-weight: bold; text-align: center; margin-top: -20px; margin-bottom: 25px; }
+        h1 { text-align: center; color: #fff; margin-bottom: 5px; }
+        .engine-label { color: var(--accent); font-size: 11px; font-weight: bold; text-align: center; margin-bottom: 20px; }
         
         label { display: block; margin-top: 15px; font-size: 12px; color: #888; text-transform: uppercase; font-weight: bold; }
-        input, textarea, select { width: 100%; padding: 15px; background: #000; border: 1px solid #444; border-radius: 10px; color: #fff; margin-top: 8px; box-sizing: border-box; }
+        input, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-top: 5px; box-sizing: border-box; }
 
-        .btn { background: var(--yt-red); color: #fff; border: none; padding: 20px; width: 100%; border-radius: 12px; font-size: 18px; font-weight: 800; cursor: pointer; margin-top: 25px; transition: 0.3s; }
-        .btn:hover { background: #b30000; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,0,0,0.3); }
+        .btn { background: var(--yt-red); color: #fff; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-save { background: #333; margin-top: 10px; border: 1px solid #555; }
+        .btn:hover { opacity: 0.9; }
 
-        .output-container { margin-top: 40px; }
-        .script-box { background: #000; padding: 25px; border-radius: 15px; border: 1px solid #444; min-height: 400px; white-space: pre-wrap; font-size: 15px; line-height: 1.7; overflow-y: auto; max-height: 800px; }
-        .stats { font-size: 11px; color: #666; margin-top: 10px; display: flex; justify-content: space-between; }
+        .script-box { background: #000; padding: 20px; border-radius: 10px; border: 1px solid #444; min-height: 300px; white-space: pre-wrap; font-size: 15px; line-height: 1.6; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div id="loader">
     <div class="spinner"></div>
-    <p id="loader-status" style="margin-top: 20px;">Initializing AI Engines...</p>
+    <p id="loader-status" style="margin-top: 20px; color: white;">AI is thinking...</p>
 </div>
 
 <div class="container">
-    <h1>10-Minute Script Architect</h1>
-    <div class="engine-label">DUAL-CORE PROCESSING: PATTERN (GEMINI 1.5) + LOGIC (GPT-4o)</div>
+    <h1>Script Architect</h1>
+    <div class="engine-label">MODE: CASUAL HINGLISH (LOW-CREDIT MODE)</div>
 
-    <label>Competitor Video (Highest Views Reference)</label>
-    <input type="text" id="refUrl" placeholder="Link to a 1M+ view video for analysis...">
+    <label>Topic / Movie Name</label>
+    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie Cast & Hype">
 
-    <label>Your Topic / Core Message</label>
-    <textarea id="topic" rows="3" placeholder="Explain your concept in detail..."></textarea>
+    <label>Extra Details</label>
+    <textarea id="notes" rows="3" placeholder="Talk about Ranveer Singh, Aditya Dhar, and why this movie will be a hit."></textarea>
 
-    <div style="display: flex; gap: 15px;">
-        <div style="flex:1">
-            <label>Language Style</label>
-            <select id="lang">
-                <option value="Hinglish (Conversational Mix)">Hinglish (Natural Mix)</option>
-                <option value="English (Global)">English</option>
-                <option value="Hindi (Shuddh)">Hindi</option>
-            </select>
-        </div>
-        <div style="flex:1">
-            <label>Target Length</label>
-            <select id="duration">
-                <option value="1600 words (10-12 mins)">10+ Minutes (Deep Dive)</option>
-                <option value="2000 words (15 mins)">15 Minutes (Masterclass)</option>
-            </select>
-        </div>
-    </div>
+    <button class="btn" onclick="generateScript()">GENERATE SCRIPT</button>
+    <button class="btn btn-save" onclick="saveToFile()">DOWNLOAD AS .TXT</button>
 
-    <button class="btn" onclick="generateLongScript()">ARCHITECT FULL SCRIPT</button>
-
-    <div class="output-container">
-        <label>Final Viral Script</label>
-        <div id="scriptOut" class="script-box">Script will be generated here...</div>
-        <div class="stats">
-            <span id="wordCount">Words: 0</span>
-            <span id="enginePath">Logic Flow: Ready</span>
-        </div>
-    </div>
+    <div id="scriptOut" class="script-box">Script result will appear here...</div>
 </div>
 
 <script>
-    async function generateLongScript() {
+    async function generateScript() {
         const topic = document.getElementById('topic').value;
-        const refUrl = document.getElementById('refUrl').value;
-        const lang = document.getElementById('lang').value;
-        const len = document.getElementById('duration').value;
+        const notes = document.getElementById('notes').value;
         const loader = document.getElementById('loader');
-        const status = document.getElementById('loader-status');
         const scriptOut = document.getElementById('scriptOut');
 
-        if (!topic) return alert("Please enter a topic!");
+        if (!topic) return alert("Bhai, topic toh likho!");
         loader.style.display = 'flex';
-        scriptOut.innerText = "Processing...";
 
         try {
-            // STEP 1: Gemini 1.5 Pro - Pattern Analysis
-            status.innerText = "Step 1: Gemini 1.5 Pro deconstructing viral DNA...";
-            const analysisResponse = await puter.ai.chat(
-                `Deconstruct the viral patterns for this topic: "${topic}". 
-                Reference URL: ${refUrl}. 
-                Extract psychological triggers, retention loops, and a 10-point narrative arc for a 10-minute video.`, 
-                { model: 'gemini-1.5-pro' } // Updated to actual existing model
-            );
-            const analysis = analysisResponse.toString();
+            // Using 'gpt-4o-mini' to avoid "Not Enough Funding" errors
+            const prompt = `Write a viral YouTube script in casual Hinglish for: "${topic}". 
+            Context: ${notes}.
+            - Use day-to-day Delhi/Mumbai slang (Bhai, Scene, Level, Solid). 
+            - NO Shuddh Hindi words. 
+            - Fact-check: If about 'Dhurandhar', mention director Aditya Dhar and cast Ranveer Singh, Sanjay Dutt, Akshaye Khanna.
+            - Format with [Visuals] and [Sfx].`;
 
-            // STEP 2: GPT-4o - Long Form Expansion
-            status.innerText = "Step 2: GPT-4o writing master script in " + lang + "...";
-            const scriptPrompt = `You are a world-class YouTube Scriptwriter. 
-            Using this analysis: [${analysis}], 
-            write a full video script (approx. ${len}) for: "${topic}".
-            
-            LANGUAGE: ${lang}.
-            CRITICAL RULES:
-            1. Pattern Interrupts every 45 seconds (Visual change/Sound).
-            2. Spoken, natural dialogue.
-            3. Include [Visual Cues] and [B-Roll Instructions].
-            4. Structure: 
-               - Hook (0:45), Problem (1:15), Body (7:00), Outro (1:00).`;
-
-            const finalScript = await puter.ai.chat(scriptPrompt, { model: 'gpt-4o' }); // Updated to existing model
-            
-            const text = finalScript.toString();
-            scriptOut.innerText = text;
-            document.getElementById('wordCount').innerText = "Words: " + text.split(/\s+/).length;
-            document.getElementById('enginePath').innerText = "Logic Flow: Gemini 1.5 -> GPT-4o";
+            const response = await puter.ai.chat(prompt, { model: 'gpt-4o-mini' });
+            scriptOut.innerText = response.toString();
 
         } catch (err) {
             console.error(err);
-            // Fallback attempt if specific models fail
-            status.innerText = "Primary models busy. Attempting fallback...";
-            try {
-                const fallback = await puter.ai.chat(`Write a ${len} script about ${topic} in ${lang}.`, { model: 'gpt-4o-mini' });
-                scriptOut.innerText = fallback.toString();
-                document.getElementById('enginePath').innerText = "Logic Flow: Fallback (GPT-4o-mini)";
-            } catch (fallbackErr) {
-                alert("The models are currently overloaded. Please check your Puter.js credits or try again in a few minutes.");
+            if(err.message.includes("funding")){
+                alert("Puter account credits khatam ho gaye hain. Please check Puter Dashboard.");
+            } else {
+                alert("Something went wrong. Try again.");
             }
         } finally {
             loader.style.display = 'none';
         }
+    }
+
+    function saveToFile() {
+        const text = document.getElementById('scriptOut').innerText;
+        if(text === "Script result will appear here...") return alert("Pehle script generate karo!");
+        
+        const blob = new Blob([text], { type: 'text/plain' });
+        const anchor = document.createElement('a');
+        anchor.download = 'youtube_script.txt';
+        anchor.href = window.URL.createObjectURL(blob);
+        anchor.click();
     }
 </script>
 
