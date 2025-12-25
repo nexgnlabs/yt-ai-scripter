@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viral Script Architect v3.0</title>
+    <title>Viral Script Architect - Fixed</title>
     <style>
         :root { --yt-red: #ff0000; --bg: #0d0d0d; --card: #1a1a1a; --text: #f0f0f0; --accent: #00e676; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
         .container { max-width: 800px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; }
-        input, textarea, select { width: 100%; padding: 12px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-bottom: 15px; box-sizing: border-box; }
+        input, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-bottom: 15px; box-sizing: border-box; }
         .btn { background: var(--yt-red); color: #fff; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
         #output { background: #000; padding: 20px; border-radius: 10px; border: 1px solid #444; min-height: 200px; white-space: pre-wrap; margin-top: 20px; line-height: 1.6; }
         .error-log { color: #ff4444; font-size: 12px; margin-top: 10px; display: none; background: #221111; padding: 10px; border-radius: 5px; }
@@ -17,18 +17,18 @@
 <body>
 
 <div class="container">
-    <h1 style="text-align: center;">Script Architect (Dec 2025 Update)</h1>
+    <h1 style="text-align: center;">Script Architect (Stable v2.0)</h1>
     
-    <label style="font-size:12px; color:#888;">GEMINI API KEY (v3.0)</label>
-    <input type="password" id="apiKey" placeholder="Paste your key from Google AI Studio">
+    <label style="font-size:12px; color:#888;">GEMINI API KEY</label>
+    <input type="password" id="apiKey" placeholder="Paste your API key here">
 
     <label style="font-size:12px; color:#888;">TOPIC</label>
     <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie Analysis">
 
     <label style="font-size:12px; color:#888;">DETAILS</label>
-    <textarea id="notes" rows="3" placeholder="Cast: Ranveer Singh, Sanjay Dutt. Use day-to-day Hinglish."></textarea>
+    <textarea id="notes" rows="3" placeholder="Cast: Ranveer Singh, Sanjay Dutt. Hinglish style."></textarea>
 
-    <button class="btn" onclick="generate()">GENERATE VIRAL SCRIPT</button>
+    <button class="btn" onclick="generate()">GENERATE SCRIPT</button>
 
     <div id="loader" style="display:none; text-align:center; margin-top:10px; color:var(--accent);">AI is thinking...</div>
     <div id="output">Your script will appear here...</div>
@@ -51,8 +51,8 @@
         output.innerText = "Processing...";
 
         try {
-            // UPDATED ENDPOINT FOR DECEMBER 2025 (Gemini 3 Flash)
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${key}`;
+            // Updated to the most stable current model name
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
             
             const response = await fetch(url, {
                 method: 'POST',
@@ -60,7 +60,7 @@
                 body: JSON.stringify({
                     contents: [{
                         parts: [{
-                            text: `Write a viral 10-minute YouTube script about ${topic}. Context: ${notes}. Language: Casual Hinglish (Mumbai/Delhi slang). No shuddh Hindi. Include [Visual Cues].`
+                            text: `Write a viral YouTube script about ${topic}. Context: ${notes}. Language: Casual Hinglish. Facts: Dhurandhar stars Ranveer Singh, Sanjay Dutt, Akshaye Khanna. Directed by Aditya Dhar.`
                         }]
                     }]
                 })
@@ -71,10 +71,9 @@
             if (data.candidates && data.candidates[0].content) {
                 output.innerText = data.candidates[0].content.parts[0].text;
             } else {
-                // This shows the actual error message from Google
-                errorLog.innerText = "Google API Response: " + JSON.stringify(data.error || data);
+                errorLog.innerText = "Error: " + JSON.stringify(data.error || data);
                 errorLog.style.display = "block";
-                output.innerText = "Error occurred. Check the red box below.";
+                output.innerText = "Failed. See error below.";
             }
         } catch (err) {
             output.innerText = "Fetch Error: " + err.message;
