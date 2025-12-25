@@ -3,99 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viral Script Engine (Budget Friendly)</title>
-    <script src="https://js.puter.com/v2/"></script>
+    <title>Viral Script Architect (Free & Secure)</title>
     <style>
         :root { --yt-red: #ff0000; --bg: #0d0d0d; --card: #1a1a1a; --text: #f0f0f0; --accent: #00e676; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 15px; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 15px; line-height: 1.5; }
         .container { max-width: 850px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; }
         
-        #loader {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .spinner { width: 50px; height: 50px; border: 5px solid #222; border-top: 5px solid var(--yt-red); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        /* Key Setup Section */
+        .key-setup { background: #111; border: 1px dashed #444; padding: 20px; border-radius: 12px; margin-bottom: 25px; }
+        .key-setup h2 { font-size: 16px; margin-top: 0; color: var(--accent); }
+        .instructions { font-size: 13px; color: #bbb; margin-bottom: 15px; }
+        .instructions a { color: var(--accent); text-decoration: none; font-weight: bold; border-bottom: 1px solid var(--accent); }
 
-        h1 { text-align: center; color: #fff; margin-bottom: 5px; }
-        .engine-label { color: var(--accent); font-size: 11px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+        label { display: block; margin-top: 15px; font-size: 11px; color: #888; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+        input, textarea, select { width: 100%; padding: 14px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-top: 5px; box-sizing: border-box; font-size: 14px; }
+        input:focus, textarea:focus { border-color: var(--yt-red); outline: none; }
+
+        .btn { background: var(--yt-red); color: #fff; border: none; padding: 16px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 20px; transition: 0.2s; }
+        .btn:hover { background: #cc0000; transform: translateY(-1px); }
+        .btn-download { background: #333; margin-top: 10px; border: 1px solid #444; }
+
+        #output { background: #000; padding: 25px; border-radius: 12px; border: 1px solid #444; min-height: 300px; white-space: pre-wrap; margin-top: 20px; font-size: 15px; line-height: 1.7; display: none; }
+        .loader { display: none; text-align: center; margin: 20px 0; color: var(--accent); font-weight: bold; }
         
-        label { display: block; margin-top: 15px; font-size: 12px; color: #888; text-transform: uppercase; font-weight: bold; }
-        input, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-top: 5px; box-sizing: border-box; }
-
-        .btn { background: var(--yt-red); color: #fff; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        .btn-save { background: #333; margin-top: 10px; border: 1px solid #555; }
-        .btn:hover { opacity: 0.9; }
-
-        .script-box { background: #000; padding: 20px; border-radius: 10px; border: 1px solid #444; min-height: 300px; white-space: pre-wrap; font-size: 15px; line-height: 1.6; margin-top: 15px; }
+        .footer-note { text-align: center; font-size: 11px; color: #555; margin-top: 30px; }
     </style>
 </head>
 <body>
 
-<div id="loader">
-    <div class="spinner"></div>
-    <p id="loader-status" style="margin-top: 20px; color: white;">AI is thinking...</p>
-</div>
-
 <div class="container">
-    <h1>Script Architect</h1>
-    <div class="engine-label">MODE: CASUAL HINGLISH (LOW-CREDIT MODE)</div>
+    <h1 style="text-align: center; margin-bottom: 5px;">Script Architect Pro</h1>
+    <p style="text-align: center; font-size: 12px; color: #888; margin-bottom: 25px;">DUAL-CORE AI: VISION & RETENTION LOGIC</p>
 
-    <label>Topic / Movie Name</label>
-    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie Cast & Hype">
+    <div class="key-setup">
+        <h2>🔑 API Configuration</h2>
+        <div class="instructions">
+            This tool is <b>Free</b>. To use it, you need a Gemini API Key:<br>
+            1. Visit <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> (Free for 1,500 requests/day).<br>
+            2. Click <b>"Create API key"</b> and paste it below. <i>Your key is saved only in your browser.</i>
+        </div>
+        <input type="password" id="apiKey" placeholder="Paste your Gemini API Key here...">
+    </div>
 
-    <label>Extra Details</label>
-    <textarea id="notes" rows="3" placeholder="Talk about Ranveer Singh, Aditya Dhar, and why this movie will be a hit."></textarea>
+    <label>Video Topic / Movie Title</label>
+    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie: Why it's Ranveer Singh's biggest gamble?">
 
-    <button class="btn" onclick="generateScript()">GENERATE SCRIPT</button>
-    <button class="btn btn-save" onclick="saveToFile()">DOWNLOAD AS .TXT</button>
+    <label>Video Style & Tone</label>
+    <select id="tone">
+        <option value="Casual Hinglish (Day-to-day Mumbai/Delhi slang)">Hinglish (Conversational)</option>
+        <option value="Professional English">English (Global)</option>
+        <option value="Pure Hindi">Hindi (Shuddh)</option>
+    </select>
 
-    <div id="scriptOut" class="script-box">Script result will appear here...</div>
+    <label>Core Message / Specific Details</label>
+    <textarea id="notes" rows="4" placeholder="Mention cast: Ranveer Singh, Sanjay Dutt, Akshaye Khanna. Director: Aditya Dhar. Focus on the 'URI' director hype. Use Bawaal, Scene, Logic etc."></textarea>
+
+    <button class="btn" onclick="generateScript()">ARCHITECT FULL SCRIPT</button>
+    
+    <div id="loader" class="loader">AI is writing your viral script... Please wait...</div>
+
+    <div id="output"></div>
+    
+    <button id="downloadBtn" class="btn btn-download" style="display: none;" onclick="downloadScript()">DOWNLOAD SCRIPT (.TXT)</button>
+
+    <div class="footer-note">
+        GitHub Secure Mode: No API keys are stored in the source code.
+    </div>
 </div>
 
 <script>
+    // Load saved key on startup
+    window.onload = () => {
+        const savedKey = localStorage.getItem('_gemini_app_key');
+        if (savedKey) document.getElementById('apiKey').value = savedKey;
+    };
+
     async function generateScript() {
+        const key = document.getElementById('apiKey').value;
         const topic = document.getElementById('topic').value;
+        const tone = document.getElementById('tone').value;
         const notes = document.getElementById('notes').value;
         const loader = document.getElementById('loader');
-        const scriptOut = document.getElementById('scriptOut');
+        const output = document.getElementById('output');
+        const downloadBtn = document.getElementById('downloadBtn');
 
-        if (!topic) return alert("Bhai, topic toh likho!");
-        loader.style.display = 'flex';
+        if (!key) return alert("Bhai, pehle API Key daalo!");
+        if (!topic) return alert("Topic empty hai!");
+
+        // Save key for future use
+        localStorage.setItem('_gemini_app_key', key);
+
+        loader.style.display = "block";
+        output.style.display = "none";
+        downloadBtn.style.display = "none";
+
+        const prompt = `
+            Act as a Top-Tier YouTube Scriptwriter (like Mohak Mangal or T&R Productions).
+            Topic: ${topic}
+            Language/Tone: ${tone}
+            Specific Instructions: ${notes}
+
+            RULES:
+            1. Language must be natural day-to-day spoken style. If Hinglish, NO shuddh Hindi. Use 'Bhai', 'Scene', 'Bawaal'.
+            2. For 'Dhurandhar' movie: Fact-check cast (Ranveer Singh, Sanjay Dutt, Akshaye Khanna, R Madhavan) and Director (Aditya Dhar).
+            3. Use 'Pattern Interrupts' every 45 seconds.
+            4. Structure: 
+               - [0:00-0:45] The Mega Hook (High Energy)
+               - [0:45-2:00] The Problem/Context
+               - [2:00-9:00] 10-Point Narrative Arc (Include [Visual Cues] and [B-Roll Instructions])
+               - [9:00-10:00] Summary & Outro.
+        `;
 
         try {
-            // Using 'gpt-4o-mini' to avoid "Not Enough Funding" errors
-            const prompt = `Write a viral YouTube script in casual Hinglish for: "${topic}". 
-            Context: ${notes}.
-            - Use day-to-day Delhi/Mumbai slang (Bhai, Scene, Level, Solid). 
-            - NO Shuddh Hindi words. 
-            - Fact-check: If about 'Dhurandhar', mention director Aditya Dhar and cast Ranveer Singh, Sanjay Dutt, Akshaye Khanna.
-            - Format with [Visuals] and [Sfx].`;
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }]
+                })
+            });
 
-            const response = await puter.ai.chat(prompt, { model: 'gpt-4o-mini' });
-            scriptOut.innerText = response.toString();
-
-        } catch (err) {
-            console.error(err);
-            if(err.message.includes("funding")){
-                alert("Puter account credits khatam ho gaye hain. Please check Puter Dashboard.");
+            const data = await response.json();
+            
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                const scriptText = data.candidates[0].content.parts[0].text;
+                output.innerText = scriptText;
+                output.style.display = "block";
+                downloadBtn.style.display = "block";
+                window.scrollTo(0, output.offsetTop);
             } else {
-                alert("Something went wrong. Try again.");
+                alert("API Error: Key invalid hai ya quota khatam ho gaya.");
             }
+        } catch (err) {
+            alert("Connection Error: Check your internet or API key.");
+            console.error(err);
         } finally {
-            loader.style.display = 'none';
+            loader.style.display = "none";
         }
     }
 
-    function saveToFile() {
-        const text = document.getElementById('scriptOut').innerText;
-        if(text === "Script result will appear here...") return alert("Pehle script generate karo!");
-        
+    function downloadScript() {
+        const text = document.getElementById('output').innerText;
         const blob = new Blob([text], { type: 'text/plain' });
-        const anchor = document.createElement('a');
-        anchor.download = 'youtube_script.txt';
-        anchor.href = window.URL.createObjectURL(blob);
-        anchor.click();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'youtube_viral_script.txt';
+        a.click();
     }
 </script>
 
