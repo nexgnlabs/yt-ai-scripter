@@ -3,90 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viral Script Architect - Dec 2025 Stable</title>
+    <title>Viral Script Architect v5.0 - Multi-Duration</title>
     <style>
         :root { --yt-red: #ff0000; --bg: #0d0d0d; --card: #1a1a1a; --text: #f0f0f0; --accent: #00e676; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
-        .container { max-width: 850px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
+        .container { max-width: 900px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; }
         
         .setup-guide { background: #111; border: 1px solid var(--accent); padding: 15px; border-radius: 10px; margin-bottom: 25px; font-size: 13px; }
         .setup-guide a { color: var(--accent); font-weight: bold; text-decoration: none; }
 
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         label { display: block; margin-top: 15px; font-size: 11px; color: #888; text-transform: uppercase; font-weight: bold; }
-        input, textarea, select { width: 100%; padding: 14px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-top: 5px; box-sizing: border-box; }
+        input, textarea, select { width: 100%; padding: 12px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-top: 5px; box-sizing: border-box; }
         
-        .btn { background: var(--yt-red); color: #fff; border: none; padding: 18px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn { background: var(--yt-red); color: #fff; border: none; padding: 18px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 25px; transition: 0.3s; }
         .btn:hover { background: #cc0000; transform: scale(1.01); }
 
-        #output { background: #000; padding: 25px; border-radius: 12px; border: 1px solid #444; min-height: 300px; white-space: pre-wrap; margin-top: 20px; line-height: 1.7; display: none; }
+        #output { background: #000; padding: 25px; border-radius: 12px; border: 1px solid #444; min-height: 300px; white-space: pre-wrap; margin-top: 20px; display: none; }
+        .loader { display: none; text-align: center; margin-top: 20px; color: var(--accent); font-weight: bold; }
         .error-log { color: #ff4444; font-size: 13px; margin-top: 15px; display: none; background: #221111; padding: 15px; border-radius: 8px; border: 1px solid #441111; }
-        .loader { display: none; text-align: center; margin-top: 20px; color: var(--accent); font-weight: bold; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1 style="text-align: center; margin-bottom: 5px;">Script Architect Pro</h1>
-    <p style="text-align: center; font-size: 12px; color: #666; margin-bottom: 20px;">STABLE ENGINE: GEMINI 2.5 FLASH-LITE</p>
+    <p style="text-align: center; font-size: 12px; color: #666; margin-bottom: 20px;">ENGINE: GEMINI 2.5 FLASH-LITE (STABLE)</p>
 
     <div class="setup-guide">
-        <b>Free API Key Kaise Lein:</b><br>
-        1. <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> par jayein.<br>
-        2. "Create API key" par click karein aur use copy karke niche paste karein.<br>
-        <i>Note: Agar error aaye, toh AI Studio mein "Set up Billing" karein (ye free hai).</i>
+        <b>Quick Setup:</b> Paste your key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>. 
+        Note: If you get a limit error, ensure you have enabled "Free Tier" in your Google AI Dashboard.
     </div>
 
-    <label>API Key (Saved in browser)</label>
+    <label>API Key</label>
     <input type="password" id="apiKey" placeholder="Paste your Gemini key here...">
 
+    <div class="form-grid">
+        <div>
+            <label>Language Style</label>
+            <select id="lang">
+                <option value="General day-to-day Hinglish (Delhi/Mumbai slang style)">Hinglish (Conversational)</option>
+                <option value="Day-to-day easy Hindi (Normal bol-chaal ki bhasha)">Easy Hindi (Simple)</option>
+                <option value="Professional English">English</option>
+            </select>
+        </div>
+        <div>
+            <label>Target Duration</label>
+            <select id="duration">
+                <option value="5 minutes (Approx 800 words)">5 Minutes</option>
+                <option value="10 minutes (Approx 1600 words)">10 Minutes</option>
+                <option value="15 minutes (Approx 2400 words)">15 Minutes</option>
+                <option value="20 minutes (Approx 3200 words)">20 Minutes</option>
+                <option value="25 minutes (Approx 4000 words)">25 Minutes</option>
+                <option value="30 minutes (Approx 4800 words)">30 Minutes (Deep Dive)</option>
+            </select>
+        </div>
+    </div>
+
     <label>Video Topic</label>
-    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie Cast & Plot Leak">
+    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie Cast Leak & Analysis">
 
-    <label>Core Details</label>
-    <textarea id="notes" rows="4" placeholder="Cast: Ranveer Singh, Sanjay Dutt, Akshaye Khanna. Style: Casual Hinglish. No formal Hindi. Use 'Bawaal', 'Logic', 'Bhai'."></textarea>
+    <label>Notes / Specific Points</label>
+    <textarea id="notes" rows="4" placeholder="Mention cast: Ranveer Singh, Sanjay Dutt. Focus on the 'URI' director hype..."></textarea>
 
-    <button class="btn" onclick="generateScript()">ARCHITECT VIRAL SCRIPT</button>
+    <button class="btn" onclick="generateScript()">GENERATE FULL SCRIPT</button>
 
-    <div id="loader" class="loader">Generating your 10-minute script...</div>
+    <div id="loader" class="loader">Architecting your viral script... please wait...</div>
     <div id="errorLog" class="error-log"></div>
     <div id="output"></div>
 </div>
 
 <script>
-    // Load key from LocalStorage
+    // Load key on refresh
     window.onload = () => {
-        const key = localStorage.getItem('_gemini_v4_key');
+        const key = localStorage.getItem('_gemini_v5_key');
         if (key) document.getElementById('apiKey').value = key;
     };
 
     async function generateScript() {
         const key = document.getElementById('apiKey').value.trim();
         const topic = document.getElementById('topic').value;
+        const lang = document.getElementById('lang').value;
+        const duration = document.getElementById('duration').value;
         const notes = document.getElementById('notes').value;
-        const output = document.getElementById('output');
+        
         const loader = document.getElementById('loader');
+        const output = document.getElementById('output');
         const errorLog = document.getElementById('errorLog');
 
-        if (!key || !topic) return alert("Bhai, Key aur Topic dono zaroori hain!");
+        if (!key || !topic) return alert("API Key and Topic are mandatory!");
 
-        localStorage.setItem('_gemini_v4_key', key);
+        localStorage.setItem('_gemini_v5_key', key);
         loader.style.display = "block";
         output.style.display = "none";
         errorLog.style.display = "none";
 
         const prompt = `
-            Act as a Viral YouTube Scriptwriter. Topic: "${topic}". 
-            Context: ${notes}.
-            - LANGUAGE: Casual Hinglish (Day-to-day Delhi/Mumbai style).
-            - STRICT: No shuddh Hindi words (like 'vritant', 'shubhaarambh').
-            - FORMAT: Write a 10-minute long script.
-            - FACTS: For 'Dhurandhar' movie, mention director Aditya Dhar and cast Ranveer, Sanjay Dutt, Akshaye Khanna.
-            - Add [Visual Cues] and [Sfx] instructions.
+            Act as a Viral YouTube Scriptwriter. 
+            Write a FULL VIDEO SCRIPT for: "${topic}".
+            TARGET DURATION: ${duration}.
+            LANGUAGE STYLE: ${lang}.
+            
+            STRICT RULES:
+            1. If Hinglish/Hindi: Avoid shuddh/formal Hindi words. Use day-to-day words like 'bawaal', 'crazy', 'scene', 'logic'.
+            2. For 'Dhurandhar' movie: Use cast Ranveer Singh, Sanjay Dutt, Akshaye Khanna, R Madhavan. Director: Aditya Dhar.
+            3. Detailed Breakdown: For longer durations (15-30 min), create a deep narrative with at least 15 chapters/points.
+            4. Formatting: Include [Visual Instructions], [B-Roll Notes], and [Sfx/Background Music Cues].
+            5. Content: Start with a Mega Hook, followed by context, deep analysis, and a binge-loop outro.
         `;
 
         try {
-            // Using the MOST stable free model as of Dec 2025
+            // Updated to the most reliable free-tier model name for Dec 2025
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`;
             
             const response = await fetch(url, {
@@ -100,16 +127,13 @@
             if (data.candidates && data.candidates[0].content) {
                 output.innerText = data.candidates[0].content.parts[0].text;
                 output.style.display = "block";
+                window.scrollTo(0, output.offsetTop);
             } else {
-                const msg = data.error ? data.error.message : "Unexpected Response";
-                errorLog.innerText = "Error: " + msg;
-                if(msg.includes("limit: 0")) {
-                    errorLog.innerHTML += "<br><b>Fix:</b> Google AI Studio mein billing enable karein (Free Tier activate karne ke liye card verify karna zaroori ho gaya hai).";
-                }
+                errorLog.innerText = "API Response: " + JSON.stringify(data.error || data);
                 errorLog.style.display = "block";
             }
         } catch (err) {
-            errorLog.innerText = "Connection Error: " + err.message;
+            errorLog.innerText = "System Error: " + err.message;
             errorLog.style.display = "block";
         } finally {
             loader.style.display = "none";
