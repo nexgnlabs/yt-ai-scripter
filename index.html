@@ -3,80 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viral Script Architect - Fixed</title>
+    <title>Viral Script Architect - Dec 2025 Stable</title>
     <style>
         :root { --yt-red: #ff0000; --bg: #0d0d0d; --card: #1a1a1a; --text: #f0f0f0; --accent: #00e676; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; }
-        input, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-bottom: 15px; box-sizing: border-box; }
-        .btn { background: var(--yt-red); color: #fff; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        #output { background: #000; padding: 20px; border-radius: 10px; border: 1px solid #444; min-height: 200px; white-space: pre-wrap; margin-top: 20px; line-height: 1.6; }
-        .error-log { color: #ff4444; font-size: 12px; margin-top: 10px; display: none; background: #221111; padding: 10px; border-radius: 5px; }
+        .container { max-width: 850px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        .setup-guide { background: #111; border: 1px solid var(--accent); padding: 15px; border-radius: 10px; margin-bottom: 25px; font-size: 13px; }
+        .setup-guide a { color: var(--accent); font-weight: bold; text-decoration: none; }
+
+        label { display: block; margin-top: 15px; font-size: 11px; color: #888; text-transform: uppercase; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 14px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-top: 5px; box-sizing: border-box; }
+        
+        .btn { background: var(--yt-red); color: #fff; border: none; padding: 18px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn:hover { background: #cc0000; transform: scale(1.01); }
+
+        #output { background: #000; padding: 25px; border-radius: 12px; border: 1px solid #444; min-height: 300px; white-space: pre-wrap; margin-top: 20px; line-height: 1.7; display: none; }
+        .error-log { color: #ff4444; font-size: 13px; margin-top: 15px; display: none; background: #221111; padding: 15px; border-radius: 8px; border: 1px solid #441111; }
+        .loader { display: none; text-align: center; margin-top: 20px; color: var(--accent); font-weight: bold; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1 style="text-align: center;">Script Architect (Stable v2.0)</h1>
-    
-    <label style="font-size:12px; color:#888;">GEMINI API KEY</label>
-    <input type="password" id="apiKey" placeholder="Paste your API key here">
+    <h1 style="text-align: center; margin-bottom: 5px;">Script Architect Pro</h1>
+    <p style="text-align: center; font-size: 12px; color: #666; margin-bottom: 20px;">STABLE ENGINE: GEMINI 2.5 FLASH-LITE</p>
 
-    <label style="font-size:12px; color:#888;">TOPIC</label>
-    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie Analysis">
+    <div class="setup-guide">
+        <b>Free API Key Kaise Lein:</b><br>
+        1. <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> par jayein.<br>
+        2. "Create API key" par click karein aur use copy karke niche paste karein.<br>
+        <i>Note: Agar error aaye, toh AI Studio mein "Set up Billing" karein (ye free hai).</i>
+    </div>
 
-    <label style="font-size:12px; color:#888;">DETAILS</label>
-    <textarea id="notes" rows="3" placeholder="Cast: Ranveer Singh, Sanjay Dutt. Hinglish style."></textarea>
+    <label>API Key (Saved in browser)</label>
+    <input type="password" id="apiKey" placeholder="Paste your Gemini key here...">
 
-    <button class="btn" onclick="generate()">GENERATE SCRIPT</button>
+    <label>Video Topic</label>
+    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie Cast & Plot Leak">
 
-    <div id="loader" style="display:none; text-align:center; margin-top:10px; color:var(--accent);">AI is thinking...</div>
-    <div id="output">Your script will appear here...</div>
+    <label>Core Details</label>
+    <textarea id="notes" rows="4" placeholder="Cast: Ranveer Singh, Sanjay Dutt, Akshaye Khanna. Style: Casual Hinglish. No formal Hindi. Use 'Bawaal', 'Logic', 'Bhai'."></textarea>
+
+    <button class="btn" onclick="generateScript()">ARCHITECT VIRAL SCRIPT</button>
+
+    <div id="loader" class="loader">Generating your 10-minute script...</div>
     <div id="errorLog" class="error-log"></div>
+    <div id="output"></div>
 </div>
 
 <script>
-    async function generate() {
+    // Load key from LocalStorage
+    window.onload = () => {
+        const key = localStorage.getItem('_gemini_v4_key');
+        if (key) document.getElementById('apiKey').value = key;
+    };
+
+    async function generateScript() {
         const key = document.getElementById('apiKey').value.trim();
         const topic = document.getElementById('topic').value;
         const notes = document.getElementById('notes').value;
         const output = document.getElementById('output');
-        const errorLog = document.getElementById('errorLog');
         const loader = document.getElementById('loader');
+        const errorLog = document.getElementById('errorLog');
 
-        if (!key) return alert("Please enter API Key!");
+        if (!key || !topic) return alert("Bhai, Key aur Topic dono zaroori hain!");
 
+        localStorage.setItem('_gemini_v4_key', key);
         loader.style.display = "block";
+        output.style.display = "none";
         errorLog.style.display = "none";
-        output.innerText = "Processing...";
+
+        const prompt = `
+            Act as a Viral YouTube Scriptwriter. Topic: "${topic}". 
+            Context: ${notes}.
+            - LANGUAGE: Casual Hinglish (Day-to-day Delhi/Mumbai style).
+            - STRICT: No shuddh Hindi words (like 'vritant', 'shubhaarambh').
+            - FORMAT: Write a 10-minute long script.
+            - FACTS: For 'Dhurandhar' movie, mention director Aditya Dhar and cast Ranveer, Sanjay Dutt, Akshaye Khanna.
+            - Add [Visual Cues] and [Sfx] instructions.
+        `;
 
         try {
-            // Updated to the most stable current model name
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
+            // Using the MOST stable free model as of Dec 2025
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`;
             
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: `Write a viral YouTube script about ${topic}. Context: ${notes}. Language: Casual Hinglish. Facts: Dhurandhar stars Ranveer Singh, Sanjay Dutt, Akshaye Khanna. Directed by Aditya Dhar.`
-                        }]
-                    }]
-                })
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
             });
 
             const data = await response.json();
 
             if (data.candidates && data.candidates[0].content) {
                 output.innerText = data.candidates[0].content.parts[0].text;
+                output.style.display = "block";
             } else {
-                errorLog.innerText = "Error: " + JSON.stringify(data.error || data);
+                const msg = data.error ? data.error.message : "Unexpected Response";
+                errorLog.innerText = "Error: " + msg;
+                if(msg.includes("limit: 0")) {
+                    errorLog.innerHTML += "<br><b>Fix:</b> Google AI Studio mein billing enable karein (Free Tier activate karne ke liye card verify karna zaroori ho gaya hai).";
+                }
                 errorLog.style.display = "block";
-                output.innerText = "Failed. See error below.";
             }
         } catch (err) {
-            output.innerText = "Fetch Error: " + err.message;
+            errorLog.innerText = "Connection Error: " + err.message;
+            errorLog.style.display = "block";
         } finally {
             loader.style.display = "none";
         }
