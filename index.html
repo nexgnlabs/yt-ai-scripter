@@ -3,24 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viral Script Architect v5.0 - Multi-Duration</title>
+    <title>Viral Script Architect v6.0 - Pro UI</title>
     <style>
         :root { --yt-red: #ff0000; --bg: #0d0d0d; --card: #1a1a1a; --text: #f0f0f0; --accent: #00e676; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
         .container { max-width: 900px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; }
         
-        .setup-guide { background: #111; border: 1px solid var(--accent); padding: 15px; border-radius: 10px; margin-bottom: 25px; font-size: 13px; }
-        .setup-guide a { color: var(--accent); font-weight: bold; text-decoration: none; }
+        /* Flashing Animation for Text */
+        @keyframes flash {
+            0%, 100% { opacity: 1; color: var(--accent); }
+            50% { opacity: 0.3; color: #fff; }
+        }
+        .flashing-text { font-weight: bold; font-size: 18px; animation: flash 1.5s infinite; margin-bottom: 10px; }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        /* Progress Bar Styles */
+        #progress-container { display: none; width: 100%; background: #000; border: 1px solid #444; border-radius: 20px; height: 30px; margin: 20px 0; overflow: hidden; position: relative; }
+        #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #ff0000, #ff4d4d); transition: width 0.4s ease; border-radius: 20px; }
+        #progress-text { position: absolute; width: 100%; text-align: center; top: 3px; font-weight: bold; font-size: 14px; color: #fff; text-shadow: 1px 1px 2px #000; }
+
         label { display: block; margin-top: 15px; font-size: 11px; color: #888; text-transform: uppercase; font-weight: bold; }
         input, textarea, select { width: 100%; padding: 12px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-top: 5px; box-sizing: border-box; }
         
-        .btn { background: var(--yt-red); color: #fff; border: none; padding: 18px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 25px; transition: 0.3s; }
-        .btn:hover { background: #cc0000; transform: scale(1.01); }
+        .btn { background: var(--yt-red); color: #fff; border: none; padding: 18px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 25px; }
+        .btn:hover { background: #cc0000; }
 
         #output { background: #000; padding: 25px; border-radius: 12px; border: 1px solid #444; min-height: 300px; white-space: pre-wrap; margin-top: 20px; display: none; }
-        .loader { display: none; text-align: center; margin-top: 20px; color: var(--accent); font-weight: bold; }
         .error-log { color: #ff4444; font-size: 13px; margin-top: 15px; display: none; background: #221111; padding: 15px; border-radius: 8px; border: 1px solid #441111; }
     </style>
 </head>
@@ -28,115 +35,120 @@
 
 <div class="container">
     <h1 style="text-align: center; margin-bottom: 5px;">Script Architect Pro</h1>
-    <p style="text-align: center; font-size: 12px; color: #666; margin-bottom: 20px;">ENGINE: GEMINI 2.5 FLASH-LITE (STABLE)</p>
-
-    <div class="setup-guide">
-        <b>Quick Setup:</b> Paste your key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>. 
-        Note: If you get a limit error, ensure you have enabled "Free Tier" in your Google AI Dashboard.
-    </div>
+    <p style="text-align: center; font-size: 12px; color: #666; margin-bottom: 25px;">GEMINI 2.5 FLASH-LITE ENGINE</p>
 
     <label>API Key</label>
-    <input type="password" id="apiKey" placeholder="Paste your Gemini key here...">
+    <input type="password" id="apiKey" placeholder="Paste your Gemini key...">
 
-    <div class="form-grid">
-        <div>
-            <label>Language Style</label>
+    <div style="display: flex; gap: 20px;">
+        <div style="flex:1">
+            <label>Language</label>
             <select id="lang">
-                <option value="General day-to-day Hinglish (Delhi/Mumbai slang style)">Hinglish (Conversational)</option>
-                <option value="Day-to-day easy Hindi (Normal bol-chaal ki bhasha)">Easy Hindi (Simple)</option>
-                <option value="Professional English">English</option>
+                <option value="Hinglish (Mumbai/Delhi slang mix)">Hinglish</option>
+                <option value="Easy day-to-day Hindi">Simple Hindi</option>
+                <option value="English">English</option>
             </select>
         </div>
-        <div>
-            <label>Target Duration</label>
+        <div style="flex:1">
+            <label>Duration</label>
             <select id="duration">
-                <option value="5 minutes (Approx 800 words)">5 Minutes</option>
-                <option value="10 minutes (Approx 1600 words)">10 Minutes</option>
-                <option value="15 minutes (Approx 2400 words)">15 Minutes</option>
-                <option value="20 minutes (Approx 3200 words)">20 Minutes</option>
-                <option value="25 minutes (Approx 4000 words)">25 Minutes</option>
-                <option value="30 minutes (Approx 4800 words)">30 Minutes (Deep Dive)</option>
+                <option value="5 min">5 Min</option>
+                <option value="10 min">10 Min</option>
+                <option value="15 min">15 Min</option>
+                <option value="20 min">20 Min</option>
+                <option value="30 min">30 Min</option>
             </select>
         </div>
     </div>
 
-    <label>Video Topic</label>
-    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie Cast Leak & Analysis">
+    <label>Topic</label>
+    <input type="text" id="topic" placeholder="e.g. Ranveer Singh's Dhurandhar Movie Details">
 
-    <label>Notes / Specific Points</label>
-    <textarea id="notes" rows="4" placeholder="Mention cast: Ranveer Singh, Sanjay Dutt. Focus on the 'URI' director hype..."></textarea>
+    <label>Details</label>
+    <textarea id="notes" rows="3" placeholder="Add specific cast/plot details here..."></textarea>
 
-    <button class="btn" onclick="generateScript()">GENERATE FULL SCRIPT</button>
+    <button class="btn" onclick="generateScript()">ARCHITECT VIRAL SCRIPT</button>
 
-    <div id="loader" class="loader">Architecting your viral script... please wait...</div>
+    <div id="loading-area" style="display: none; text-align: center; margin-top: 30px;">
+        <div class="flashing-text">ARCHITECTING YOUR VIRAL SCRIPT...</div>
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+            <div id="progress-text">0%</div>
+        </div>
+    </div>
+
     <div id="errorLog" class="error-log"></div>
     <div id="output"></div>
 </div>
 
 <script>
-    // Load key on refresh
-    window.onload = () => {
-        const key = localStorage.getItem('_gemini_v5_key');
-        if (key) document.getElementById('apiKey').value = key;
-    };
-
     async function generateScript() {
         const key = document.getElementById('apiKey').value.trim();
         const topic = document.getElementById('topic').value;
         const lang = document.getElementById('lang').value;
-        const duration = document.getElementById('duration').value;
+        const dur = document.getElementById('duration').value;
         const notes = document.getElementById('notes').value;
         
-        const loader = document.getElementById('loader');
+        const loadingArea = document.getElementById('loading-area');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
         const output = document.getElementById('output');
         const errorLog = document.getElementById('errorLog');
 
-        if (!key || !topic) return alert("API Key and Topic are mandatory!");
+        if (!key || !topic) return alert("API Key and Topic are required!");
 
-        localStorage.setItem('_gemini_v5_key', key);
-        loader.style.display = "block";
+        // Show Loading UI
+        loadingArea.style.display = "block";
         output.style.display = "none";
         errorLog.style.display = "none";
-
-        const prompt = `
-            Act as a Viral YouTube Scriptwriter. 
-            Write a FULL VIDEO SCRIPT for: "${topic}".
-            TARGET DURATION: ${duration}.
-            LANGUAGE STYLE: ${lang}.
-            
-            STRICT RULES:
-            1. If Hinglish/Hindi: Avoid shuddh/formal Hindi words. Use day-to-day words like 'bawaal', 'crazy', 'scene', 'logic'.
-            2. For 'Dhurandhar' movie: Use cast Ranveer Singh, Sanjay Dutt, Akshaye Khanna, R Madhavan. Director: Aditya Dhar.
-            3. Detailed Breakdown: For longer durations (15-30 min), create a deep narrative with at least 15 chapters/points.
-            4. Formatting: Include [Visual Instructions], [B-Roll Notes], and [Sfx/Background Music Cues].
-            5. Content: Start with a Mega Hook, followed by context, deep analysis, and a binge-loop outro.
-        `;
+        
+        // Progress Bar Simulation Logic
+        let progress = 0;
+        progressBar.style.width = "0%";
+        progressText.innerText = "0%";
+        
+        const interval = setInterval(() => {
+            if (progress < 90) {
+                progress += Math.random() * 5; // Slow increment to look real
+                if (progress > 90) progress = 90;
+                progressBar.style.width = progress + "%";
+                progressText.innerText = Math.floor(progress) + "%";
+            }
+        }, 800);
 
         try {
-            // Updated to the most reliable free-tier model name for Dec 2025
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`;
-            
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: `Write a ${dur} YouTube script for ${topic} in ${lang}. Details: ${notes}. Include [Visuals].` }] }]
+                })
             });
 
             const data = await response.json();
+            clearInterval(interval); // Stop simulation
 
-            if (data.candidates && data.candidates[0].content) {
-                output.innerText = data.candidates[0].content.parts[0].text;
-                output.style.display = "block";
-                window.scrollTo(0, output.offsetTop);
+            if (data.candidates) {
+                // Finish progress bar
+                progressBar.style.width = "100%";
+                progressText.innerText = "100% COMPLETE";
+                
+                setTimeout(() => {
+                    loadingArea.style.display = "none";
+                    output.innerText = data.candidates[0].content.parts[0].text;
+                    output.style.display = "block";
+                }, 500);
             } else {
-                errorLog.innerText = "API Response: " + JSON.stringify(data.error || data);
+                loadingArea.style.display = "none";
+                errorLog.innerText = "API Error: " + JSON.stringify(data.error || data);
                 errorLog.style.display = "block";
             }
         } catch (err) {
-            errorLog.innerText = "System Error: " + err.message;
+            clearInterval(interval);
+            loadingArea.style.display = "none";
+            errorLog.innerText = "Fetch Error: " + err.message;
             errorLog.style.display = "block";
-        } finally {
-            loader.style.display = "none";
         }
     }
 </script>
