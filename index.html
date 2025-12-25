@@ -3,152 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viral Script Architect (Free & Secure)</title>
+    <title>Viral Script Architect v3.0</title>
     <style>
         :root { --yt-red: #ff0000; --bg: #0d0d0d; --card: #1a1a1a; --text: #f0f0f0; --accent: #00e676; }
-        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 15px; line-height: 1.5; }
-        .container { max-width: 850px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; }
-        
-        /* Key Setup Section */
-        .key-setup { background: #111; border: 1px dashed #444; padding: 20px; border-radius: 12px; margin-bottom: 25px; }
-        .key-setup h2 { font-size: 16px; margin-top: 0; color: var(--accent); }
-        .instructions { font-size: 13px; color: #bbb; margin-bottom: 15px; }
-        .instructions a { color: var(--accent); text-decoration: none; font-weight: bold; border-bottom: 1px solid var(--accent); }
-
-        label { display: block; margin-top: 15px; font-size: 11px; color: #888; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
-        input, textarea, select { width: 100%; padding: 14px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-top: 5px; box-sizing: border-box; font-size: 14px; }
-        input:focus, textarea:focus { border-color: var(--yt-red); outline: none; }
-
-        .btn { background: var(--yt-red); color: #fff; border: none; padding: 16px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; margin-top: 20px; transition: 0.2s; }
-        .btn:hover { background: #cc0000; transform: translateY(-1px); }
-        .btn-download { background: #333; margin-top: 10px; border: 1px solid #444; }
-
-        #output { background: #000; padding: 25px; border-radius: 12px; border: 1px solid #444; min-height: 300px; white-space: pre-wrap; margin-top: 20px; font-size: 15px; line-height: 1.7; display: none; }
-        .loader { display: none; text-align: center; margin: 20px 0; color: var(--accent); font-weight: bold; }
-        
-        .footer-note { text-align: center; font-size: 11px; color: #555; margin-top: 30px; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: var(--card); border-radius: 15px; padding: 30px; border: 1px solid #333; }
+        input, textarea, select { width: 100%; padding: 12px; background: #000; border: 1px solid #444; border-radius: 8px; color: #fff; margin-bottom: 15px; box-sizing: border-box; }
+        .btn { background: var(--yt-red); color: #fff; border: none; padding: 15px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        #output { background: #000; padding: 20px; border-radius: 10px; border: 1px solid #444; min-height: 200px; white-space: pre-wrap; margin-top: 20px; line-height: 1.6; }
+        .error-log { color: #ff4444; font-size: 12px; margin-top: 10px; display: none; background: #221111; padding: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1 style="text-align: center; margin-bottom: 5px;">Script Architect Pro</h1>
-    <p style="text-align: center; font-size: 12px; color: #888; margin-bottom: 25px;">DUAL-CORE AI: VISION & RETENTION LOGIC</p>
-
-    <div class="key-setup">
-        <h2>🔑 API Configuration</h2>
-        <div class="instructions">
-            This tool is <b>Free</b>. To use it, you need a Gemini API Key:<br>
-            1. Visit <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> (Free for 1,500 requests/day).<br>
-            2. Click <b>"Create API key"</b> and paste it below. <i>Your key is saved only in your browser.</i>
-        </div>
-        <input type="password" id="apiKey" placeholder="Paste your Gemini API Key here...">
-    </div>
-
-    <label>Video Topic / Movie Title</label>
-    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie: Why it's Ranveer Singh's biggest gamble?">
-
-    <label>Video Style & Tone</label>
-    <select id="tone">
-        <option value="Casual Hinglish (Day-to-day Mumbai/Delhi slang)">Hinglish (Conversational)</option>
-        <option value="Professional English">English (Global)</option>
-        <option value="Pure Hindi">Hindi (Shuddh)</option>
-    </select>
-
-    <label>Core Message / Specific Details</label>
-    <textarea id="notes" rows="4" placeholder="Mention cast: Ranveer Singh, Sanjay Dutt, Akshaye Khanna. Director: Aditya Dhar. Focus on the 'URI' director hype. Use Bawaal, Scene, Logic etc."></textarea>
-
-    <button class="btn" onclick="generateScript()">ARCHITECT FULL SCRIPT</button>
+    <h1 style="text-align: center;">Script Architect (Dec 2025 Update)</h1>
     
-    <div id="loader" class="loader">AI is writing your viral script... Please wait...</div>
+    <label style="font-size:12px; color:#888;">GEMINI API KEY (v3.0)</label>
+    <input type="password" id="apiKey" placeholder="Paste your key from Google AI Studio">
 
-    <div id="output"></div>
-    
-    <button id="downloadBtn" class="btn btn-download" style="display: none;" onclick="downloadScript()">DOWNLOAD SCRIPT (.TXT)</button>
+    <label style="font-size:12px; color:#888;">TOPIC</label>
+    <input type="text" id="topic" placeholder="e.g. Dhurandhar Movie Analysis">
 
-    <div class="footer-note">
-        GitHub Secure Mode: No API keys are stored in the source code.
-    </div>
+    <label style="font-size:12px; color:#888;">DETAILS</label>
+    <textarea id="notes" rows="3" placeholder="Cast: Ranveer Singh, Sanjay Dutt. Use day-to-day Hinglish."></textarea>
+
+    <button class="btn" onclick="generate()">GENERATE VIRAL SCRIPT</button>
+
+    <div id="loader" style="display:none; text-align:center; margin-top:10px; color:var(--accent);">AI is thinking...</div>
+    <div id="output">Your script will appear here...</div>
+    <div id="errorLog" class="error-log"></div>
 </div>
 
 <script>
-    // Load saved key on startup
-    window.onload = () => {
-        const savedKey = localStorage.getItem('_gemini_app_key');
-        if (savedKey) document.getElementById('apiKey').value = savedKey;
-    };
-
-    async function generateScript() {
-        const key = document.getElementById('apiKey').value;
+    async function generate() {
+        const key = document.getElementById('apiKey').value.trim();
         const topic = document.getElementById('topic').value;
-        const tone = document.getElementById('tone').value;
         const notes = document.getElementById('notes').value;
-        const loader = document.getElementById('loader');
         const output = document.getElementById('output');
-        const downloadBtn = document.getElementById('downloadBtn');
+        const errorLog = document.getElementById('errorLog');
+        const loader = document.getElementById('loader');
 
-        if (!key) return alert("Bhai, pehle API Key daalo!");
-        if (!topic) return alert("Topic empty hai!");
-
-        // Save key for future use
-        localStorage.setItem('_gemini_app_key', key);
+        if (!key) return alert("Please enter API Key!");
 
         loader.style.display = "block";
-        output.style.display = "none";
-        downloadBtn.style.display = "none";
-
-        const prompt = `
-            Act as a Top-Tier YouTube Scriptwriter (like Mohak Mangal or T&R Productions).
-            Topic: ${topic}
-            Language/Tone: ${tone}
-            Specific Instructions: ${notes}
-
-            RULES:
-            1. Language must be natural day-to-day spoken style. If Hinglish, NO shuddh Hindi. Use 'Bhai', 'Scene', 'Bawaal'.
-            2. For 'Dhurandhar' movie: Fact-check cast (Ranveer Singh, Sanjay Dutt, Akshaye Khanna, R Madhavan) and Director (Aditya Dhar).
-            3. Use 'Pattern Interrupts' every 45 seconds.
-            4. Structure: 
-               - [0:00-0:45] The Mega Hook (High Energy)
-               - [0:45-2:00] The Problem/Context
-               - [2:00-9:00] 10-Point Narrative Arc (Include [Visual Cues] and [B-Roll Instructions])
-               - [9:00-10:00] Summary & Outro.
-        `;
+        errorLog.style.display = "none";
+        output.innerText = "Processing...";
 
         try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+            // UPDATED ENDPOINT FOR DECEMBER 2025 (Gemini 3 Flash)
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${key}`;
+            
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }]
+                    contents: [{
+                        parts: [{
+                            text: `Write a viral 10-minute YouTube script about ${topic}. Context: ${notes}. Language: Casual Hinglish (Mumbai/Delhi slang). No shuddh Hindi. Include [Visual Cues].`
+                        }]
+                    }]
                 })
             });
 
             const data = await response.json();
-            
-            if (data.candidates && data.candidates[0].content.parts[0].text) {
-                const scriptText = data.candidates[0].content.parts[0].text;
-                output.innerText = scriptText;
-                output.style.display = "block";
-                downloadBtn.style.display = "block";
-                window.scrollTo(0, output.offsetTop);
+
+            if (data.candidates && data.candidates[0].content) {
+                output.innerText = data.candidates[0].content.parts[0].text;
             } else {
-                alert("API Error: Key invalid hai ya quota khatam ho gaya.");
+                // This shows the actual error message from Google
+                errorLog.innerText = "Google API Response: " + JSON.stringify(data.error || data);
+                errorLog.style.display = "block";
+                output.innerText = "Error occurred. Check the red box below.";
             }
         } catch (err) {
-            alert("Connection Error: Check your internet or API key.");
-            console.error(err);
+            output.innerText = "Fetch Error: " + err.message;
         } finally {
             loader.style.display = "none";
         }
-    }
-
-    function downloadScript() {
-        const text = document.getElementById('output').innerText;
-        const blob = new Blob([text], { type: 'text/plain' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'youtube_viral_script.txt';
-        a.click();
     }
 </script>
 
