@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10-Minute Viral Script Engine (Gemini 3 + GPT-5)</title>
+    <title>10-Minute Viral Script Engine (Gemini 1.5 + GPT-4o)</title>
     <script src="https://js.puter.com/v2/"></script>
     <style>
         :root { --yt-red: #ff0000; --bg: #0d0d0d; --card: #1a1a1a; --text: #f0f0f0; --accent: #00e676; }
@@ -35,12 +35,12 @@
 
 <div id="loader">
     <div class="spinner"></div>
-    <p id="loader-status" style="margin-top: 20px;">Gemini 3 Pro: Analyzing Viral DNA...</p>
+    <p id="loader-status" style="margin-top: 20px;">Initializing AI Engines...</p>
 </div>
 
 <div class="container">
     <h1>10-Minute Script Architect</h1>
-    <div class="engine-label">DUAL-CORE PROCESSING: VISION (GEMINI 3) + LOGIC (GPT-5)</div>
+    <div class="engine-label">DUAL-CORE PROCESSING: PATTERN (GEMINI 1.5) + LOGIC (GPT-4o)</div>
 
     <label>Competitor Video (Highest Views Reference)</label>
     <input type="text" id="refUrl" placeholder="Link to a 1M+ view video for analysis...">
@@ -86,47 +86,55 @@
         const len = document.getElementById('duration').value;
         const loader = document.getElementById('loader');
         const status = document.getElementById('loader-status');
+        const scriptOut = document.getElementById('scriptOut');
 
         if (!topic) return alert("Please enter a topic!");
         loader.style.display = 'flex';
+        scriptOut.innerText = "Processing...";
 
         try {
-            // STEP 1: Gemini 3 Pro - Pattern Analysis
-            status.innerText = "Step 1: Gemini 3 Pro deconstructing high-view logic...";
-            const analysis = await puter.ai.chat(
+            // STEP 1: Gemini 1.5 Pro - Pattern Analysis
+            status.innerText = "Step 1: Gemini 1.5 Pro deconstructing viral DNA...";
+            const analysisResponse = await puter.ai.chat(
                 `Deconstruct the viral patterns for this topic: "${topic}". 
                 Reference URL: ${refUrl}. 
-                Extract the psychological triggers, the 'open loops' used for retention, and a 10-point narrative arc that can sustain 10 minutes of interest.`, 
-                { model: 'gemini-3-pro-preview' }
+                Extract psychological triggers, retention loops, and a 10-point narrative arc for a 10-minute video.`, 
+                { model: 'gemini-1.5-pro' } // Updated to actual existing model
             );
+            const analysis = analysisResponse.toString();
 
-            // STEP 2: GPT-5 - Long Form Expansion
-            status.innerText = "Step 2: GPT-5 writing 10-minute master script in " + lang + "...";
+            // STEP 2: GPT-4o - Long Form Expansion
+            status.innerText = "Step 2: GPT-4o writing master script in " + lang + "...";
             const scriptPrompt = `You are a world-class YouTube Scriptwriter. 
-            Using this analysis: [${analysis.toString()}], 
-            write a 10-minute video script (approx. ${len}) for the topic: "${topic}".
+            Using this analysis: [${analysis}], 
+            write a full video script (approx. ${len}) for: "${topic}".
             
             LANGUAGE: ${lang}.
             CRITICAL RULES:
-            1. Use 'Pattern Interrupts' every 45 seconds to prevent drop-off.
-            2. Language must be natural, day-to-day spoken style (if Hinglish, use casual mix).
+            1. Pattern Interrupts every 45 seconds (Visual change/Sound).
+            2. Spoken, natural dialogue.
             3. Include [Visual Cues] and [B-Roll Instructions].
             4. Structure: 
-               - 0:00-0:45: The Mega Hook.
-               - 0:45-2:00: Problem & Click Confirmation.
-               - 2:00-9:00: The 10-Point Narrative Body.
-               - 9:00-10:00: Summary & Binge-Loop Outro.`;
+               - Hook (0:45), Problem (1:15), Body (7:00), Outro (1:00).`;
 
-            const finalScript = await puter.ai.chat(scriptPrompt, { model: 'gpt-5' });
+            const finalScript = await puter.ai.chat(scriptPrompt, { model: 'gpt-4o' }); // Updated to existing model
             
             const text = finalScript.toString();
-            document.getElementById('scriptOut').innerText = text;
+            scriptOut.innerText = text;
             document.getElementById('wordCount').innerText = "Words: " + text.split(/\s+/).length;
-            document.getElementById('enginePath').innerText = "Logic Flow: Gemini 3 Vision -> GPT-5 Logic";
+            document.getElementById('enginePath').innerText = "Logic Flow: Gemini 1.5 -> GPT-4o";
 
         } catch (err) {
             console.error(err);
-            alert("Error: The models are currently overloaded. Please try again.");
+            // Fallback attempt if specific models fail
+            status.innerText = "Primary models busy. Attempting fallback...";
+            try {
+                const fallback = await puter.ai.chat(`Write a ${len} script about ${topic} in ${lang}.`, { model: 'gpt-4o-mini' });
+                scriptOut.innerText = fallback.toString();
+                document.getElementById('enginePath').innerText = "Logic Flow: Fallback (GPT-4o-mini)";
+            } catch (fallbackErr) {
+                alert("The models are currently overloaded. Please check your Puter.js credits or try again in a few minutes.");
+            }
         } finally {
             loader.style.display = 'none';
         }
