@@ -45,6 +45,7 @@
             <label>Language</label>
             <select id="lang">
                 <option value="Hinglish (Mumbai/Delhi slang mix)">Hinglish</option>
+                <option value="Simple day-to-day Marathi (Conversational)">Simple Marathi</option>
                 <option value="Easy day-to-day Hindi">Simple Hindi</option>
                 <option value="English">English</option>
             </select>
@@ -109,7 +110,7 @@
         
         const interval = setInterval(() => {
             if (progress < 90) {
-                progress += Math.random() * 5; // Slow increment to look real
+                progress += Math.random() * 5; 
                 if (progress > 90) progress = 90;
                 progressBar.style.width = progress + "%";
                 progressText.innerText = Math.floor(progress) + "%";
@@ -122,15 +123,14 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: `Write a ${dur} YouTube script for ${topic} in ${lang}. Details: ${notes}. Include [Visuals].` }] }]
+                    contents: [{ parts: [{ text: `Write a high-retention ${dur} YouTube script for the topic "${topic}" in ${lang}. Specific details to include: ${notes}. Ensure the tone is engaging and suitable for social media. Include bracketed [Visuals/Camera Cues] for the editor.` }] }]
                 })
             });
 
             const data = await response.json();
-            clearInterval(interval); // Stop simulation
+            clearInterval(interval);
 
-            if (data.candidates) {
-                // Finish progress bar
+            if (data.candidates && data.candidates[0].content) {
                 progressBar.style.width = "100%";
                 progressText.innerText = "100% COMPLETE";
                 
@@ -141,7 +141,7 @@
                 }, 500);
             } else {
                 loadingArea.style.display = "none";
-                errorLog.innerText = "API Error: " + JSON.stringify(data.error || data);
+                errorLog.innerText = "API Error: " + (data.error?.message || "Check your API Key or Quota.");
                 errorLog.style.display = "block";
             }
         } catch (err) {
